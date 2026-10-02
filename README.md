@@ -16,3 +16,8 @@ materials.html (хаб), scripts.html, presentation.html (lead-facing), outreach
 ## Lead relay
 - ref_code: `4DAAC4DURB`
 - deep_link: https://t.me/formsfeedback_bot?start=4DAAC4DURB
+
+## Правки (2026-10-02)
+- Сайт закрыт от индексации (meta robots noindex, nofollow) — чтобы не каннибализировать основной сайт клиента
+- 7500+ проектов, 9 лет, гарантия до 10 лет, рассрочка до 4 месяцев; добавлена финансовая ответственность за сроки; канал MAX
+- Добавлены реальные фото установок (Google Drive клиента), иконки, бегущая строка, плашки, тёплая палитра (песок/терракота) к зелёной
