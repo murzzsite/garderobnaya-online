@@ -1,7 +1,6 @@
 (() => {
   // ===== CONFIG =====
   const LEAD_ENDPOINT = 'https://lead-relay.leestygpt.workers.dev/lead/4DAAC4DURB';
-  const MAIL_ENDPOINT = 'https://formsubmit.co/ajax/garderobnaya.online@gmail.com';
 
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -61,31 +60,13 @@
       btn.disabled = true;
       btn.textContent = 'Отправляем...';
 
-      // Копия заявки на почту: формат письма всегда одинаковый (тема, порядок и названия полей)
-      const labels = [
-        ['name', 'Имя'], ['phone', 'Телефон'], ['product', 'Что нужно изготовить'], ['city', 'Город'],
-        ['budget', 'Бюджет'], ['term', 'Срок заказа'], ['client_type', 'Тип клиента'],
-        ['messenger', 'Мессенджер'], ['comment', 'Комментарий'],
-      ];
-      const mail = { _subject: 'Новая заявка с сайта Гардеробная.онлайн', _template: 'table', _captcha: 'false' };
-      labels.forEach(([k, label]) => { mail[label] = payload[k] || '—'; });
-      mail['Страница'] = location.href;
-
       try {
-        const [tg, em] = await Promise.allSettled([
-          fetch(LEAD_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          }),
-          fetch(MAIL_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify(mail),
-          }),
-        ]);
-        const ok = r => r.status === 'fulfilled' && r.value.ok;
-        if (!ok(tg) && !ok(em)) throw new Error('lead delivery failed');
+        const resp = await fetch(LEAD_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
         btn.textContent = 'Заявка отправлена ✓';
         form.reset();
       } catch (err) {
